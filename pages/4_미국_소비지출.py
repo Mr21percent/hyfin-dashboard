@@ -45,8 +45,8 @@ main_fig = go.Figure(
             x = df_column_slided["date"], 
             y = df_column_slided["PCDG"], 
             name="내구재 소비지출",
-            offsetgroup = 1,
-            base = df_column_slided["PCESV"],
+            offsetgroup = 2,
+            #base = df_column_slided["PCESV"],
             ),
         
         ]

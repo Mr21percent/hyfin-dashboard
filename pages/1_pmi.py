@@ -61,6 +61,10 @@ chart_df = pd.DataFrame()
 chart_df["month"] = pd.DatetimeIndex(data["date"]).month
 chart_df["year"] = pd.DatetimeIndex(data["date"]).year
 chart_df["date"] = pd.DatetimeIndex(data["date"]).strftime("%Y년 %m월")
+chart_df['is 금리 인하기'] = data[ 'is 금리 인하기'].astype("float")
+chart_df['is 금리 인하기 (shadow Rate)'] = data[ 'is 금리 인하기 (shadow Rate)'].astype("float")
+
+
 chart_df["Manufacturing PMI"] = data["Manufacturing PMI"].astype("float")
 chart_df["Non-Manufacturing PMI"] = data["Non-Manufacturing PMI"].astype("float")
 chart_df["PMI-diff"] = chart_df["Manufacturing PMI"] - chart_df["Non-Manufacturing PMI"]
@@ -72,8 +76,10 @@ start_index_fig_bar, end_index_fig_bar = st.select_slider(
     '표를 확인할 범위를 설정하시오',
     options= chart_df["date"],
     value=(chart_df.iloc[-45]["date"], chart_df.iloc[-1]["date"] ))
-check_50_under= st.checkbox(' 제조업 경기 부진 기간 표기 ( 제조업 PMI < 50 ) ')
 
+check_50_under= st.checkbox(' 제조업 경기 부진 기간 표기 ( 제조업 PMI < 50 ) ')
+check_irate_down= st.checkbox(' 미국 기준금리 인하 기간 표기 (FED) ')
+check_irate_down_shadow = st.checkbox(' 미국 기준금리 인하 기간 표기 (Wu-Xia Shadow Federal Funds Rate)')
 
 
 df_column_slided = chart_df.query("(date >= @start_index_fig_bar) and (date <= @end_index_fig_bar)")
@@ -142,7 +148,7 @@ main_fig.update_yaxes(title_text="<b> 전년동월대비 수출 증감률 </b> (
 
 
 
-if check_50_under:
+if check_50_under :
     main_fig = bgLevels(main_fig, 
                    df_column_slided, 
                    "Manufacturing PMI", 
@@ -150,5 +156,23 @@ if check_50_under:
                    mode = 'below', 
                    fillcolor = 'rgba(100,100,100,0.2)', 
                    layer ='below')
+if check_irate_down :
+    main_fig = bgLevels(main_fig, 
+                   df_column_slided, 
+                   "is 금리 인하기", 
+                   level = 0.5, 
+                   mode = 'above', 
+                   fillcolor = 'rgba(200,0,0,0.2)', 
+                   layer ='below')
 
+if check_irate_down_shadow :
+    main_fig = bgLevels(main_fig, 
+                   df_column_slided, 
+                   "is 금리 인하기 (shadow Rate)", 
+                   level = 0.5, 
+                   mode = 'above', 
+                   fillcolor = 'rgba(200,0,0,0.2)', 
+                   layer ='below')
+    
+    
 st.plotly_chart(main_fig, use_container_width=True)
