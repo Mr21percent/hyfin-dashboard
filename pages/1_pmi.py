@@ -71,7 +71,7 @@ chart_df = chart_df.sort_values("date")
 start_index_fig_bar, end_index_fig_bar = st.select_slider(
     '표를 확인할 범위를 설정하시오',
     options= chart_df["date"],
-    value=(chart_df.iloc[0]["date"], chart_df.iloc[-1]["date"] ))
+    value=(chart_df.iloc[-45]["date"], chart_df.iloc[-1]["date"] ))
 check_50_under= st.checkbox(' 제조업 경기 부진 기간 표기 ( 제조업 PMI < 50 ) ')
 
 
