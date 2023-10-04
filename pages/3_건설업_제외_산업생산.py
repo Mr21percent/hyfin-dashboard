@@ -21,7 +21,7 @@ slider_range = chart_df["date"].drop_duplicates().sort_values()
 start_index_fig_bar, end_index_fig_bar = st.select_slider(
     '표를 확인할 범위를 설정하시오',
     options= slider_range ,
-    value=(slider_range.iloc[-18], slider_range.iloc[-1] ))
+    value=(slider_range.iloc[-24], slider_range.iloc[-1] ))
 
 is_new_100 = st.checkbox('시작을 100으로 고정하시겠습니까?')
 
